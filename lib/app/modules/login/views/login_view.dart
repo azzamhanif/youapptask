@@ -165,7 +165,7 @@ class LoginView extends GetView<LoginController> {
                       Text('No Account? ',style: TextStyle(color: Colors.white,fontSize: 13),),
                       TextButton(
                         onPressed: (){
-                          Get.offNamed(Routes.HOME);
+                          Get.offNamed(Routes.REGISTER);
                         },
                         child: GradientText(
                           'Register Now',
