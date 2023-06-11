@@ -1,12 +1,25 @@
 import 'package:get/get.dart';
+import 'package:youapptask/app/data/models/user_model.dart';
 
 class ProfileController extends GetxController {
   //TODO: Implement ProfileController
+  var isEdit = false.obs;
+  Rx<User> data = User().obs;
+  var isDataCompleted = false.obs;
 
-  final count = 0.obs;
+  void OnEdit(){
+    isEdit.value = !isEdit.value;
+  }
+
+  void initData(){
+    data.value = User(name: 'Halo');
+    isDataCompleted.value = true;
+  }
+
   @override
   void onInit() {
     super.onInit();
+    initData();
   }
 
   @override
@@ -19,5 +32,4 @@ class ProfileController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
 }

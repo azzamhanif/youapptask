@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:youapptask/app/routes/app_pages.dart';
 
 class LoginController extends GetxController {
   //TODO: Implement LoginController
@@ -16,7 +17,7 @@ class LoginController extends GetxController {
   }
 
   void login(){
-
+    Get.toNamed(Routes.PROFILE);
   }
 
   void tooglePassword(){

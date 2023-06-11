@@ -20,3 +20,7 @@ final backgroundColor = List<Color>.from([
   Color(0xff0D1D23),
   Color(0xff09141A),
 ]);
+
+final solidBackground = Color(0xff09141A);
+final sectionColor = Color(0xff162329);
+final cardInfoDarkColor = Color(0xff0E191F);

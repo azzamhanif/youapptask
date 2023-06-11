@@ -1,0 +1,17 @@
+{
+  "name": "",
+  "gender": "",
+  "birthday": "",
+  "horoscope": "",
+  "zodiac": "",
+  "height": "",
+  "weight": "",
+  "username": "",
+  "imgUrl": "",
+  "interest": [
+    {
+      "id": "",
+      "name": ""
+    }
+  ]
+}

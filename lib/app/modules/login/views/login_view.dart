@@ -145,8 +145,7 @@ class LoginView extends GetView<LoginController> {
                       child: ElevatedButton(
                         onPressed: (!controller.enableButton.value)
                           ? null
-                          : (){
-                        },
+                          : controller.login,
                         child: Text('Login'),
                         style: ElevatedButton.styleFrom(
                           primary: Colors.transparent,

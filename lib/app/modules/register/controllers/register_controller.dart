@@ -41,7 +41,7 @@ class RegisterController extends GetxController {
   void register(){
     var isValid = registerFormKey.currentState!.validate();
     if(isValid){
-      Get.toNamed(Routes.HOME);
+      Get.toNamed(Routes.PROFILE);
     }
   }
 
