@@ -4,8 +4,10 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:youapptask/app/modules/interest/controllers/interest_controller.dart';
 import 'package:youapptask/app/modules/profile/views/widget/about_profile_widget.dart';
 import 'package:youapptask/app/modules/profile/views/widget/edit_profile_form_widget.dart';
+import 'package:youapptask/app/routes/app_pages.dart';
 import 'package:youapptask/app/util/palette.dart';
 
 import '../controllers/profile_controller.dart';
@@ -14,6 +16,8 @@ class ProfileView extends GetView<ProfileController> {
   const ProfileView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    controller.update();
+    var interestController = Get.find<InterestController>();
     return Scaffold(
       body: Container(
         height: Get.height,
@@ -94,7 +98,7 @@ class ProfileView extends GetView<ProfileController> {
                                 Column(
                                   children: [
                                     SizedBox(height: 6,),
-                                    Text('Male',style: TextStyle(color: Colors.white,fontSize: 13),),
+                                    Text(controller.data.value.gender!,style: TextStyle(color: Colors.white,fontSize: 13),),
                                     SizedBox(height: 20,),
                                   ],
                                 ),
@@ -107,7 +111,7 @@ class ProfileView extends GetView<ProfileController> {
                                         children: [
                                           Icon(Icons.ac_unit,color: Colors.white,size: 20,),
                                           SizedBox(width: 10,),
-                                          Text('Male',style: TextStyle(color: Colors.white,fontSize: 14),),
+                                          Text(controller.data.value.horoscope!,style: TextStyle(color: Colors.white,fontSize: 14),),
                                         ],
                                       ),
                                     ),
@@ -117,7 +121,7 @@ class ProfileView extends GetView<ProfileController> {
                                         children: [
                                           Icon(Icons.ac_unit,color: Colors.white,size: 20,),
                                           SizedBox(width: 10,),
-                                          Text('Male',style: TextStyle(color: Colors.white,fontSize: 14),),
+                                          Text(controller.data.value.zodiac!,style: TextStyle(color: Colors.white,fontSize: 14),),
                                         ],
                                       ),
                                     ),
@@ -159,9 +163,15 @@ class ProfileView extends GetView<ProfileController> {
                           Text('About',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
                           GestureDetector(
                               onTap: (){
-                                controller.OnEdit();
+                                if(!controller.isEdit.value)
+                                  controller.OnEdit();
+                                else{
+                                  controller.Save();
+                                }
                               },
-                              child: SvgPicture.asset('assets/icons/ic_edit.svg')),
+                              child: controller.isEdit.value
+                                ? GradientText('Save & Update', colors: golden,gradientDirection: GradientDirection.rtl,)
+                                : SvgPicture.asset('assets/icons/ic_edit.svg')),
                         ],
                       ),
                       SizedBox(height: 33,),
@@ -179,78 +189,6 @@ class ProfileView extends GetView<ProfileController> {
 
                     ],
                   )
-
-                  // (!controller.isEdit.value)
-                  //   ? (!controller.isDataCompleted.value)
-                  //       ?
-                  //         Column(
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             Row(
-                  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //               children: [
-                  //                 Text('About',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
-                  //                 GestureDetector(
-                  //                     onTap: (){
-                  //                       controller.OnEdit();
-                  //                     },
-                  //                     child: SvgPicture.asset('assets/icons/ic_edit.svg')),
-                  //               ],
-                  //             ),
-                  //             SizedBox(height: 33,),
-                  //             Container(
-                  //                 width: 275,
-                  //                 child: Text('Add in your your to help others know you better',style: TextStyle(fontSize: 14,color: Colors.white.withOpacity(.52)),))
-                  //           ],
-                  //         )
-                  //       :
-                  //         Column(
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             Row(
-                  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //               children: [
-                  //                 Text('About',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
-                  //                 GestureDetector(
-                  //                     onTap: (){
-                  //                       controller.OnEdit();
-                  //                     },
-                  //                     child: SvgPicture.asset('assets/icons/ic_edit.svg')),
-                  //               ],
-                  //             ),
-                  //             SizedBox(height: 24,),
-                  //             Container(
-                  //                 child: Row(
-                  //                   children: [
-                  //                     Text('Birthday: ',style: TextStyle(fontSize: 14,color: Colors.white.withOpacity(.52)),),
-                  //                   ],
-                  //                 ))
-                  //           ],
-                  //         )
-                  //
-                  //   :
-                  //     Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         Row(
-                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //           children: [
-                  //             Text('About',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
-                  //             GestureDetector(
-                  //                 onTap: (){
-                  //                   controller.OnEdit();
-                  //                 },
-                  //                 child: GradientText(
-                  //                   style: TextStyle(fontSize: 12),
-                  //                   'Save & Update.', colors: golden)),
-                  //           ],
-                  //         ),
-                  //         ///Form
-                  //         EditProfileFormWidget()
-                  //
-                  //       ],
-                  //     )
-                  ,
                 ),
 
                 ///Interest
@@ -270,14 +208,31 @@ class ProfileView extends GetView<ProfileController> {
                         children: [
                           Text('Interest',style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
                           GestureDetector(
-                            onTap: (){},
+                            onTap: (){
+                              Get.toNamed(Routes.INTEREST);
+                            },
                             child: SvgPicture.asset('assets/icons/ic_edit.svg')),
                         ],
                       ),
                       SizedBox(height: 33,),
-                      Container(
-                        width: 275,
-                        child: Text('Add in your interest to find a better match',style: TextStyle(fontSize: 14,color: Colors.white.withOpacity(.52)),))
+
+                      if(interestController.selectedTags.isNotEmpty)
+                        Wrap(
+                          children: interestController.selectedTags.map((item) => Container(
+                            margin: EdgeInsets.only(right: 4,bottom: 4),
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(.3),
+                                borderRadius: BorderRadius.circular(8)
+                            ),
+                            child: Text(item,style: TextStyle(color: Colors.white),),
+                          ),).toList(),
+                        ),
+
+                      if(interestController.selectedTags.isEmpty)
+                        Container(
+                          width: 275,
+                          child: Text('Add in your interest to find a better match',style: TextStyle(fontSize: 14,color: Colors.white.withOpacity(.52)),))
                     ],
                   ),
                 ),
